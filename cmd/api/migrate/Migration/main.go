@@ -43,11 +43,11 @@ func main() {
 		log.Fatal(err)
 	}
 	switch direction {
-	case "Up":
+	case "up":
 		if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 			log.Fatal(err)
 		}
-	case "Down":
+	case "down":
 		if err := m.Down(); err != nil && err != migrate.ErrNoChange {
 			log.Fatal(err)
 
