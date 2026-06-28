@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
@@ -18,7 +20,10 @@ type application struct {
 
 func main() {
 
-	db, err := sql.Open("sqlite3", "./data.db")
+	db, err := sql.Open("sqlite3", "/home/mr-null/Documents/Go-learning/REST-API/data.db")
+	wd, _ := os.Getwd()
+	fmt.Println("PWD:", wd)
+	fmt.Println("DB path:", "./data.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,4 +37,5 @@ func main() {
 	if err := app.Serve(); err != nil {
 		log.Fatal(err)
 	}
+
 }

@@ -12,10 +12,12 @@ func (app *application) routes() http.Handler {
 	v1 := g.Group("/api/v1")
 	{
 		v1.POST("/eventes", app.CreateEvent)
-		v1.GET("/eventes", app.GetEvent)
+		v1.GET("/eventes", app.GetEvents)
 		v1.GET("/eventes/:id", app.GetEvent)
 		v1.PUT("/event/:id", app.updateEvent)
 		v1.DELETE("/event/:id", app.DeleteEvent)
+		v1.POST("/events/:id/attendees/:userId"  , app.addAttendeestoEvent)
+		v1.GET("/event/:id/attandees/" , app.GetAttandeesForEvent)
 
 		v1.POST("/auth/register", app.RegisterUser)
 
