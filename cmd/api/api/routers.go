@@ -18,7 +18,9 @@ func (app *application) routes() http.Handler {
 		v1.DELETE("/event/:id", app.DeleteEvent)
 		v1.POST("/events/:id/attendees/:userId"  , app.addAttendeestoEvent)
 		v1.GET("/event/:id/attandees/" , app.GetAttandeesForEvent)
-
+		v1.DELETE("/event/:id/attendees/:userId" , app.DeleteAttendeeFromEvent)
+		v1.GET("/attendee/:id/events" , app.GetEventByAttendees)
+		
 		v1.POST("/auth/register", app.RegisterUser)
 
 	}

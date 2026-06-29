@@ -131,7 +131,7 @@ func (app *application) addAttendeestoEvent(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	}
-	existingAttendee, err := app.models.Attendees.GetByEventAndAttendees(eventId, UserID)
+	existingAttendee, err := app.models.Attendees.GetByEventAndAttendee(eventId, UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "faild to retive attendees"})
 		return
@@ -144,7 +144,7 @@ func (app *application) addAttendeestoEvent(c *gin.Context) {
 		EventId: eventId,
 		UserId:  user.Id,
 	}
-	_, err = app.models.Attendees.Insert(&attendee)
+	_, err = app.models.Attendees.Instert(&attendee)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "faild to add attendees"})
 		return
@@ -158,10 +158,43 @@ func (app *application) GetAttandeesForEvent(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "can not get ID for Event"})
 		return
 	}
-	user, err := app.models.Attendees.GetByAttendeesEvent(id)
+	user, err := app.models.Attendees.GetAttendeesByEvent(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "faild to retive attendees for event"})
 		return
 	}
 	c.JSON(http.StatusOK, user)
+}
+func (app *application) DeleteAttendeeFromEvent(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can not get ID for Event"})
+		return
+	}
+	userid, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "can not get ID for user"})
+		return
+	}
+	err = app.models.Attendees.Delete(userid, id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "can not delete from db!!!"})
+		return
+	}
+	c.JSON(http.StatusNoContent, nil)
+
+}
+
+func (app *application) GetEventByAttendees(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error ": "user id is not ok"})
+		return
+	}
+	event, err := app.models.Event.GetByAttendees(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "con not Get event by attendees"})
+	}
+	c.JSON(http.StatusOK, event)
 }
