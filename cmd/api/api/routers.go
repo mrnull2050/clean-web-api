@@ -22,7 +22,7 @@ func (app *application) routes() http.Handler {
 		v1.GET("/attendee/:id/events" , app.GetEventByAttendees)
 		
 		v1.POST("/auth/register", app.RegisterUser)
-
+		v1.POST("/user/login" , app.login)
 	}
 	return g
 }

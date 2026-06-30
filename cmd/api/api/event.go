@@ -191,7 +191,7 @@ func (app *application) GetEventByAttendees(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error ": "user id is not ok"})
 		return
 	}
-	event, err := app.models.Event.GetByAttendees(id)
+	event, err := app.models.Attendees.GetByAttendees(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "con not Get event by attendees"})
