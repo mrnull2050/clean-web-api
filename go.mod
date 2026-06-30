@@ -7,6 +7,8 @@ require (
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 )
 
+require github.com/golang-jwt/jwt/v5 v5.3.1 // indirect
+
 require (
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect

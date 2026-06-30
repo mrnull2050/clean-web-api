@@ -30,18 +30,26 @@ RETURNING id
 
 }
 
-func (u *UserModels) GetUserById(id int) (*User, error) {
+func (u *UserModels) getUser(query string, args ...interface{}) (*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := "SELECT * FROM users WHERE id = $1"
 	var user User
-	err := u.DB.QueryRowContext(ctx, query, id).Scan(&user.Id, &user.Name, &user.Email)
+	err := u.DB.QueryRowContext(ctx, query, args...).Scan(&user.Id, &user.Name, &user.Email)
 	if err != nil {
-		if err == sql.ErrNoRows{
-			return nil ,nil
+		if err == sql.ErrNoRows {
+			return nil, nil
 		}
-		return nil , err
-	}	
-	return &user , nil
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (m *UserModels) Get(id int) (*User, error) {
+	query := "SELECT * FROM users WHERE id = $1"
+	return m.getUser(query, id)
+}
+func (m *UserModels) GetByEmail(email string) (*User, error) {
+	query := "SELECT * FROM users WHERE id = $1"
+	return m.getUser(query, email)
 }
