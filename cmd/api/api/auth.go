@@ -28,18 +28,20 @@ type LoginResponse struct {
 
 func (app *application) login(c *gin.Context) {
 	var auth LoginRequest
-	if err := c.ShouldBindJSON(auth); err != nil {
+	if err := c.ShouldBindJSON(&auth); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	exiestingUser, err := app.models.User.GetByEmail(auth.Email)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "invaild Email or password"})
-		return
-	}
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "sth went wrong"})
-	}
+if err != nil {
+    c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid email or password"})
+    return
+}
+
+if exiestingUser == nil {
+    c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid email or password"})
+    return
+}
 	err = bcrypt.CompareHashAndPassword([]byte(exiestingUser.Password), []byte(auth.Password))
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "invaild Email or password"})

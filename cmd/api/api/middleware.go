@@ -33,11 +33,20 @@ func (app *application) AuthMiddleWare() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
-		claims , ok := token.Claims.(jwt.MapClaims)
+		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
-				ctx.JSON(http.StatusUnauthorized, gin.H{"error": "invaild token"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "invaild token"})
 			ctx.Abort()
 			return
 		}
+		userId := claims["userId"].(float64)
+		user, err := app.models.User.Get(int(userId))
+		if err != nil {
+			ctx.JSON(http.StatusUnauthorized , gin.H{"error" : "can not get user by id with token"})
+			ctx.Abort()
+			return 
+		}
+		ctx.Set("user" , user)
+		ctx.Next()
 	}
 }

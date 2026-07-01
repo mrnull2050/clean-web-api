@@ -35,7 +35,12 @@ func (u *UserModels) getUser(query string, args ...interface{}) (*User, error) {
 	defer cancel()
 
 	var user User
-	err := u.DB.QueryRowContext(ctx, query, args...).Scan(&user.Id, &user.Name, &user.Email)
+	err := u.DB.QueryRowContext(ctx, query, args...).Scan(
+		&user.Id,
+		&user.Name,
+		&user.Email,
+		&user.Password,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -50,6 +55,6 @@ func (m *UserModels) Get(id int) (*User, error) {
 	return m.getUser(query, id)
 }
 func (m *UserModels) GetByEmail(email string) (*User, error) {
-	query := "SELECT * FROM users WHERE id = $1"
+	query := "SELECT id, name, email, password FROM users WHERE email = $1"
 	return m.getUser(query, email)
 }

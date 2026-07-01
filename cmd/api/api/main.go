@@ -5,12 +5,22 @@ import (
 	"fmt"
 	"log"
 	"os"
-
+	_ "github.com/mrnull2050/clean-web-api/docs"
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mrnull2050/clean-web-api/internal/database"
 	"github.com/mrnull2050/clean-web-api/internal/env"
 )
+
+
+// @title Go Gin REST API
+// @version 1.0
+// @descritpion  A rest API in Go using Gin framework
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Enter your Bearer  token in this format  **Bearer Token**
+
 
 type application struct {
 	Port      int

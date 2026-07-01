@@ -1,0 +1,54 @@
+definitions:
+  github_com_mrnull2050_clean-web-api_internal_database.Event:
+    properties:
+      date:
+        type: string
+      description:
+        maxLength: 10
+        minLength: 3
+        type: string
+      id:
+        type: integer
+      location:
+        minLength: 3
+        type: string
+      name:
+        minLength: 3
+        type: string
+      ownerid:
+        type: integer
+    required:
+    - date
+    - description
+    - location
+    - name
+    type: object
+info:
+  contact: {}
+  title: Go Gin REST API
+  version: "1.0"
+paths:
+  /api/v1/events:
+    get:
+      consumes:
+      - application/json
+      description: Returns all events
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_mrnull2050_clean-web-api_internal_database.Event'
+            type: array
+      summary: Returns all events
+      tags:
+      - Events
+securityDefinitions:
+  BearerAuth:
+    description: Enter your Bearer  token in this format  **Bearer Token**
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
